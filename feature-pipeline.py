@@ -59,16 +59,20 @@ dataset_api = project.get_dataset_api()
 
 # Upload all of the local files to the common_voice directory you created in Hopsworks
 local_paths = ["./common_voice/dataset_dict.json",
+               "./common_voice/train/dataset_info.json",
                "./common_voice/train/state.json",
+               "./common_voice/train/dataset.arrow"
+               "./common_voice/test/dataset_info.json",
                "./common_voice/test/state.json",
                "./common_voice/test/dataset.arrow",
-               "./common_voice/train/dataset.arrow"
               ]
 upload_paths =["common_voice/",
                "common_voice/train/",
+               "common_voice/train/dataset.arrow" 
+               "common_voice/train/",
+               "common_voice/test/",
                "common_voice/test/",
                "common_voice/test/dataset.arrow",
-               "common_voice/train/dataset.arrow" #this one does not work...
               ]
 
 for lp,up in zip(local_paths,upload_paths):
