@@ -1,6 +1,5 @@
 import os
 from datasets import list_datasets, load_dataset, DatasetDict
-import torch
 import evaluate
 
 from huggingface_hub import notebook_login
@@ -15,12 +14,23 @@ from transformers import WhisperTokenizer
 from transformers import Seq2SeqTrainingArguments
 from transformers import Seq2SeqTrainer
 
+import torch
+os.environ['XLA_PYTHON_CLIENT_PREALLOCATE']='false' #make sure JAX does not eat up all memory 
+torch.cuda.empty_cache()
+
 ## ---------------------------------------------------------------------------------------------------------
 
-check_GPU = True
-download_data_locally = False #only needs to be done once if you have access to the same machine later on  
+check_GPU = False
+download_data_locally = False # only needs to be done once if you have access to the same machine later on  
 data_location = 'GoogleDrive'
 google_drive_url = "https://drive.google.com/drive/folders/1yHWh1FxJZswpc4GwukgrrgVcY-bwqF5L?usp=share_link" 
+push_to_hub = False # don't have git lfs installed on cluster and don't have access to install it...
+output_dir = "./swedish_asr_model_training" #save the model checkpoints here
+
+# Start training from pre-trained model.
+# use "openai/whisper-small" for first run
+# 2022-12-06: "LudvigDoeser/swedish_asr_model_training" has been trained with the below for 1000 steps; continue there
+start_training_from = "LudvigDoeser/swedish_asr_model_training" 
 
 ## ---------------------------------------------------------------------------------------------------------
 
@@ -30,14 +40,17 @@ project = hopsworks.login()
 
 ## ---------------------------------------------------------------------------------------------------------
 
-# Check if GPU is available     
+# Check if GPU is available; only works in notebook environment     
 def print_GPU_info():
+    """
     gpu_info = !nvidia-smi
     gpu_info = '\n'.join(gpu_info)
     if gpu_info.find('failed') >= 0:
         print('Not connected to a GPU')
     else:
         print(gpu_info)
+    """
+    pass
 
 if check_GPU:
     print_GPU_info()
@@ -94,22 +107,35 @@ if download_data_locally:
         gdown.download_folder(google_drive_url, quiet=False, use_cookies=False) 
 
 # Print what data is available locally
-!ls common_voice/
-!ls -lh common_voice/train/
-!ls -lh common_voice/test/
+dir_paths = ['common_voice/','common_voice/train/','common_voice/test/'] # folder path
+
+# Iterate directory
+for dir_path in dir_paths:
+    print('Checking files in directory: {}'.format(dir_path))
+    res = [] # list to store files
+    for path in os.listdir(dir_path):
+        # check if current path is a file
+        if os.path.isfile(os.path.join(dir_path, path)):
+            res.append(path)
+    print('Found files: {} \n'.format(res))
+
+# only works in notebook environment:
+#!ls common_voice/
+#!ls -lh common_voice/train/
+#!ls -lh common_voice/test/
 
 # Connect to hopsworks
 dataset_api = project.get_dataset_api()
 
 # Load the downloaded Hugging Face dataset from local disk 
+print('Loading training data')
 cc = DatasetDict.load_from_disk("common_voice")
 
 # We can leverage the WhisperProcessor we defined earlier to perform both the feature extractor and the tokenizer operations:
 tokenizer = WhisperTokenizer.from_pretrained("openai/whisper-small", language="Swedish", task="transcribe")
 # To simplify using the feature extractor and tokenizer, we can wrap both into a single WhisperProcessor class
 processor = WhisperProcessor.from_pretrained("openai/whisper-small", language="Swedish", task="transcribe")
-# and the pre-trained model
-model = WhisperForConditionalGeneration.from_pretrained("openai/whisper-small")
+
 
 # Data collecting
 
@@ -143,6 +169,7 @@ class DataCollatorSpeechSeq2SeqWithPadding:
 data_collator = DataCollatorSpeechSeq2SeqWithPadding(processor=processor)
 
 # Evaluate 
+print('Loading evaluation metric')
 metric = evaluate.load("wer")
 
 def compute_metrics(pred):
@@ -160,18 +187,23 @@ def compute_metrics(pred):
 
     return {"wer": wer}
 
+
+# Load the pre-trained model
+print('Loading the pre-trained model')
+model = WhisperForConditionalGeneration.from_pretrained(start_training_from)
 model.config.forced_decoder_ids = None
 model.config.suppress_tokens = []
 
 # Prepare training:
+print('Defining training arguments')
 training_args = Seq2SeqTrainingArguments(
     num_train_epochs=1,
-    output_dir="./swedish_asr_model_training",  # change to a repo name of your choice
+    output_dir=output_dir,  # change to a repo name of your choice
     per_device_train_batch_size=16,
     gradient_accumulation_steps=1,  # increase by 2x for every 2x decrease in batch size
     learning_rate=1e-5,
     warmup_steps=500,
-    max_steps=1000,
+    max_steps=10000,
     gradient_checkpointing=True,
     fp16=True,
     evaluation_strategy="steps",
@@ -185,7 +217,7 @@ training_args = Seq2SeqTrainingArguments(
     load_best_model_at_end=True,
     metric_for_best_model="wer",
     greater_is_better=False,
-    push_to_hub=False,
+    push_to_hub=push_to_hub,
 )
 
 trainer = Seq2SeqTrainer(
@@ -198,7 +230,9 @@ trainer = Seq2SeqTrainer(
     tokenizer=processor.feature_extractor,
 )
 
+print('Saving pretrained arguments')
 processor.save_pretrained(training_args.output_dir)
 
 # Train it 
+print('Start training')
 trainer.train()
