@@ -24,13 +24,15 @@ check_GPU = False
 download_data_locally = False # only needs to be done once if you have access to the same machine later on  
 data_location = 'GoogleDrive'
 google_drive_url = "https://drive.google.com/drive/folders/1yHWh1FxJZswpc4GwukgrrgVcY-bwqF5L?usp=share_link" 
-push_to_hub = False # don't have git lfs installed on cluster and don't have access to install it...
-output_dir = "./swedish_asr_model_training" #save the model checkpoints here
+push_to_hub = False # didn't have git lfs installed on cluster in the beginning. Using this option, one will have to manually upload to huggingface  
+output_dir = "./swedish_asr_model_training_newoptimizer" #save the model checkpoints here
+optimizer = "adafactor"  # default is "adamw_hf"
 
 # Start training from pre-trained model.
 # use "openai/whisper-small" for first run
 # 2022-12-06: "LudvigDoeser/swedish_asr_model_training" has been trained with the below for 1000 steps; continue there
-start_training_from = "LudvigDoeser/swedish_asr_model_training" 
+#start_training_from = "LudvigDoeser/swedish_asr_model_training" 
+start_training_from = "openai/whisper-small"
 
 ## ---------------------------------------------------------------------------------------------------------
 
@@ -218,6 +220,7 @@ training_args = Seq2SeqTrainingArguments(
     metric_for_best_model="wer",
     greater_is_better=False,
     push_to_hub=push_to_hub,
+    optim=optimizer,
 )
 
 trainer = Seq2SeqTrainer(
