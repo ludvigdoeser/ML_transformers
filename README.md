@@ -17,3 +17,17 @@ For the interested reader, one can create a pip3 compatible `requirements.txt` f
 ```
 pip3 freeze > requirements.txt  # Python3
 ```
+
+# Training results
+
+Try AdamW and adagrad because of no-free-lunch theorem... I will elaborate on this. 
+
+Using AdamW these are the model performance results::
+
+Last:
+
+{'eval_loss': 0.44238531589508057, 'eval_wer': 19.942996961630502, 'eval_runtime': 980.543, 'eval_samples_per_second': 5.17, 'eval_steps_per_second': 0.647, 'epoch': 12.94}
+{'train_runtime': 35079.1076, 'train_samples_per_second': 4.561, 'train_steps_per_second': 0.285, 'train_loss': 0.01170906912391074, 'epoch': 12.94} 
+
+Best: 
+{'eval_loss': 0.3693341314792633, 'eval_wer': 21.228254147508807, 'eval_runtime': 979.4692, 'eval_samples_per_second': 5.175, 'eval_steps_per_second': 0.647, 'epoch': 3.88}
