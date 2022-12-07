@@ -54,6 +54,8 @@ common_voice = common_voice.map(prepare_dataset, remove_columns=common_voice.col
 # What's in common_voice now? 
 help(common_voice)
 
+if upload_to == 'hopsworks':
+
 # Upload to hopsworks
 dataset_api = project.get_dataset_api()
 
@@ -78,22 +80,14 @@ upload_paths =["common_voice/",
 for lp,up in zip(local_paths,upload_paths):
     uploaded_file_path = dataset_api.upload(local_path = lp, upload_path = up, overwrite=True)
 
-print('Done')
+elif upload_to == 'googleDrive': #only works in google notebook environment
 
-"""
-project = hopsworks.login()
-fs = project.get_feature_store()
-
-titanic_df = pd.read_csv("https://raw.githubusercontent.com/ludvigdoeser/Serverless-ML-Titanic-Survival-Tasks/main/data/titanic.csv")
-
-#primary_key=["Pclass","Sex","Age","Sibsp","Parch","Fare","Embarked","Title","Deck"], 
-titanic_fg = fs.get_or_create_feature_group(
-    name="titanic_modal",
-    version=1,
-    primary_key=["pclass","age","sibSp","parch","sex_male"],
-    description="Titanic Survival dataset")
-
-titanic_fg.insert(titanic_df, write_options={"wait_for_job" : False})
+    from google.colab import drive
+    drive.mount('/content/gdrive')
+    try:
+        os.mkdir("/content/gdrive/MyDrive/MLdata/common_voice")
+    except:
+	pass
+    common_voice.save_to_disk(F"/content/gdrive/MyDrive/MLdata/common_voice/")
 
 print('Done')
-"""
