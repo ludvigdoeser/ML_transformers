@@ -25,7 +25,7 @@ However, for some reason it does not work as expected... When running the same `
 ```python
 python3 app.py
 # or
-python3 app_youtube.py
+python3 app_youtube.py #e.g. use https://www.youtube.com/watch?v=RQEMxtM2_X8 (news in basic Swedish)
 ```
 
 # Requirements for running the code
@@ -48,7 +48,7 @@ The evaluation metric used is the **Word error rate** (`WER`), which is a common
 
 # Training
 
-## Optimization choices
+### Optimization choices
 
 Try AdamW and adagrad because of no-free-lunch theorem... I will elaborate on this. 
 
