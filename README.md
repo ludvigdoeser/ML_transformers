@@ -14,13 +14,19 @@ In the file `training-pipeline.py`, the ASR model can be GPU-trained with differ
 
 The file `app.py` downloads our model from Huggingface, and provides a User Interface to allow users to use their microphone to transcribe Swedish audio to text.
 
-## If we manage:
+The file named `app_youtube.py` builds a Gradio application to transcribe a video (the first 30 seconds at the moment) to text.
 
-In the file `feature_daily.py`, we grab a youtube video? 
+# Use the UI
 
-In the file `batch-inference-pipeline.py`, a batch inference pipeline is built to transcribe the audio.
+Huggingface Spaces provide us with the possibility of putting our UI there, using this [link](https://huggingface.co/spaces/LudvigDoeser/svenska_taligenkanning)
 
-The file named `app_youtube_video.py` builds a Gradio application to transcribe a video to text.
+However, for some reason it does not work as expected... When running the same `app.py` scripts locally, we get much better results. For this, one has to clone the repo and start a fresh conda environment with the requirement list. Then one can do:
+
+```python
+python3 app.py
+# or
+python3 app_youtube.py
+```
 
 # Requirements for running the code
 
