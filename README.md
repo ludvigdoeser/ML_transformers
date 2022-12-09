@@ -68,21 +68,7 @@ The best result from the two optimizers were:
 | AdamW       | 0.4340263605117798  | 19.932241671372104  | 35079         | 0.011709   | 10.35 |
 | Adagrad     | 0.4000212848186493  | 19.942996961630502  | 38430         | 0.080103   | 7.76  |
 
-* Best with AdamW:
-
-Best: {'eval_loss': 0.4340263605117798, 'eval_wer': 19.932241671372104, 'eval_runtime': 978.9502, 'eval_samples_per_second': 5.178, 'eval_steps_per_second': 0.648, 'epoch': 10.35}
-Last: {'eval_loss': 0.44238531589508057, 'eval_wer': 19.942996961630502, 'eval_runtime': 980.543, 'eval_samples_per_second': 5.17, 'eval_steps_per_second': 0.647, $
-
-{'train_runtime': 35079.1076, 'train_samples_per_second': 4.561, 'train_steps_per_second': 0.285, 'train_loss': 0.01170906912391074, 'epoch': 12.94}
-
-*Note: epoch 12.94 should actually be 13.94 as 1000 steps were trained in another run and this training continued from there*
-
-* Best with Adagrad:
-
-Best: {'eval_loss': 0.4000212848186493, 'eval_wer': 19.942996961630502, 'eval_runtime': 1024.9109, 'eval_samples_per_second': 4.946, 'eval_steps_per_second': 0.619$
-Last: {'eval_loss': 0.4368054270744324, 'eval_wer': 19.97257400984109, 'eval_runtime': 1029.183, 'eval_samples_per_second': 4.925, 'eval_steps_per_second': 0.616, 'epoch': 12.94}
-
-{'train_runtime': 38430.0906, 'train_samples_per_second': 4.163, 'train_steps_per_second': 0.26, 'train_loss': 0.0801033290736843, 'epoch': 12.94}
+*Note: epoch 10.35 should actually be 11.35 as 1000 steps were trained in another run and this training continued from there.*
 
 In summary, we see that Adagrad actually results in a lower eval_loss, although AdamW results in a lower eval_wer. Overall, though, the optimizers yield very similar results and no major difference is observed.
 
