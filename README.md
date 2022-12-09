@@ -54,9 +54,11 @@ The evaluation metric used is the **Word error rate** (`WER`), which is a common
 
 ### Model-centric approach
 
-*
+* One general approach for improving the model performance could be simply using more layers, larger width and increasing the head number in the transformer model, that is, using larger size of the model with more parameters. As reported in the paper ‘Robust Speech Recognition via Large-ScaleWeak Supervision’ from open AI, for swedish language recognition, the medium- and large-sized model using 769M and 1550M parameters, improve the WER to 13.7% and 10.6% respectively, from the 22.1% WER with small model employing 244M parameters.
 
-* One approach for potential improvement is **choosing the optimal optimizer**. In that spirit, we tried both *AdamW* and *Adagrad*. 
+* Besides, we observe that in the Whisper model, the encoder module contains a small stem which processes the input log-magnitude Mel spectrogram representation using two 1D convolution layers with a filter of width 3, and the second convolutional layer has a stride value of 2. Since the input log-Mel spectrogram contains two axis with different physical meanings, i.e. the magnitudes and frequencies of signals, it might be helpful to do only one convolutional layer, so that more useful information could be preserved with less filtering.
+
+* Another approach for potential improvement is **choosing the optimal optimizer**. In that spirit, we tried both *AdamW* and *Adagrad*. 
 The reason behind trying different optimizers is the no-free-lunch theorem, which states that there is no single best optimization algorithm.
 
 The best result from the two optimizers were:
