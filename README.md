@@ -1,4 +1,6 @@
 # ML_transformers
+Group members: Ludvig Doeser and Xin Huang
+
 Lab2 in Advanced Scalable Machine Learning Course at KTH
 
 # Intro
