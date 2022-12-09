@@ -8,6 +8,8 @@ from transformers import WhisperProcessor
 
 from datasets import Audio
 
+upload_to = 'googleDrive'
+
 # Login to huggingface and hopsworks
 notebook_login()
 project = hopsworks.login()
@@ -55,39 +57,45 @@ common_voice = common_voice.map(prepare_dataset, remove_columns=common_voice.col
 help(common_voice)
 
 if upload_to == 'hopsworks':
+    print('Uploading data to Hopsworks')
+    
+    # Upload to hopsworks
+    dataset_api = project.get_dataset_api()
 
-# Upload to hopsworks
-dataset_api = project.get_dataset_api()
+    # Upload all of the local files to the common_voice directory you created in Hopsworks
+    local_paths = ["./common_voice/dataset_dict.json",
+                   "./common_voice/train/dataset_info.json",
+                   "./common_voice/train/state.json",
+                   "./common_voice/train/dataset.arrow"
+                   "./common_voice/test/dataset_info.json",
+                   "./common_voice/test/state.json",
+                   "./common_voice/test/dataset.arrow",
+                  ]
+    upload_paths =["common_voice/",
+                   "common_voice/train/",
+                   "common_voice/train/dataset.arrow" 
+                   "common_voice/train/",
+                   "common_voice/test/",
+                   "common_voice/test/",
+                   "common_voice/test/dataset.arrow",
+                  ]
 
-# Upload all of the local files to the common_voice directory you created in Hopsworks
-local_paths = ["./common_voice/dataset_dict.json",
-               "./common_voice/train/dataset_info.json",
-               "./common_voice/train/state.json",
-               "./common_voice/train/dataset.arrow"
-               "./common_voice/test/dataset_info.json",
-               "./common_voice/test/state.json",
-               "./common_voice/test/dataset.arrow",
-              ]
-upload_paths =["common_voice/",
-               "common_voice/train/",
-               "common_voice/train/dataset.arrow" 
-               "common_voice/train/",
-               "common_voice/test/",
-               "common_voice/test/",
-               "common_voice/test/dataset.arrow",
-              ]
-
-for lp,up in zip(local_paths,upload_paths):
-    uploaded_file_path = dataset_api.upload(local_path = lp, upload_path = up, overwrite=True)
+    for lp,up in zip(local_paths,upload_paths):
+        uploaded_file_path = dataset_api.upload(local_path = lp, upload_path = up, overwrite=True)
 
 elif upload_to == 'googleDrive': #only works in google notebook environment
-
+    print('Uploading data to Google Drive')
+    
     from google.colab import drive
     drive.mount('/content/gdrive')
     try:
         os.mkdir("/content/gdrive/MyDrive/MLdata/common_voice")
     except:
-	pass
+        pass
     common_voice.save_to_disk(F"/content/gdrive/MyDrive/MLdata/common_voice/")
 
+else:
+    print('Not uploading data anywhere')
+    pass
+    
 print('Done')
