@@ -56,9 +56,7 @@ The evaluation metric used is the **Word error rate** (`WER`), which is a common
 
 *
 
-*
-
-A related approach for potential improvement is **choosing the optimal optimizer**. In that spirit, we tried both *AdamW* and *Adagrad*. 
+* One approach for potential improvement is **choosing the optimal optimizer**. In that spirit, we tried both *AdamW* and *Adagrad*. 
 The reason behind trying different optimizers is the no-free-lunch theorem, which states that there is no single best optimization algorithm.
 
 The best result from the two optimizers were:
