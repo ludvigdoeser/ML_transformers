@@ -63,12 +63,13 @@ The reason behind trying different optimizers is the no-free-lunch theorem, whic
 
 The best result from the two optimizers were:
 
-| Optimizer   | Eval Loss           | Eval WER            | Train Runtime | Train Loss | Epoch |
+| Optimizer   | Eval Loss           | Eval WER            | Train Runtime* | Train Loss | Epoch |
 | :---        |    :----:           |      :----:         | :----:        | :----:     | ---:  |
-| AdamW       | 0.4340263605117798  | 19.932241671372104  | 35079         | 0.011709   | 10.35 |
+| AdamW       | 0.4340263605117798  | 19.932241671372104  | 35079         | 0.011709   | 10.35** |
 | Adagrad     | 0.4000212848186493  | 19.942996961630502  | 38430         | 0.080103   | 7.76  |
 
-*Note: epoch 10.35 should actually be 11.35 as 1000 steps were trained in another run and this training continued from there.*
+\* *The runtime corresponds to 10000 steps of training*
+\** *Epoch 10.35 should actually be 11.35 as 1000 steps were trained in another run and this training continued from there.*
 
 In summary, we see that Adagrad actually results in a lower eval_loss, although AdamW results in a lower eval_wer. Overall, though, the optimizers yield very similar results and no major difference is observed.
 
