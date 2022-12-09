@@ -61,10 +61,12 @@ The evaluation metric used is the **Word error rate** (`WER`), which is a common
 A related approach for potential improvement is **choosing the optimal optimizer**. In that spirit, we tried both *AdamW* and *Adagrad*. 
 The reason behind trying different optimizers is the no-free-lunch theorem, which states that there is no single best optimization algorithm.
 
-| Syntax      | Description | Test Text     |
-| :---        |    :----:   |          ---: |
-| Header      | Title       | Here's this   |
-| Paragraph   | Text        | And more      |
+The best result from the two optimizers were:
+
+| Optimizer   | Eval Loss           | Eval WER            | Train Runtime | Train Loss | Epoch |
+| :---        |    :----:           |      :----:         | :----:        | :----:     | ---:  |
+| AdamW       | 0.4340263605117798  | 19.932241671372104  | 35079         | 0.011709   | 10.35 |
+| Adagrad     | 0.4000212848186493  | 19.942996961630502  | 38430         | 0.080103   | 7.76  |
 
 * Best with AdamW:
 
