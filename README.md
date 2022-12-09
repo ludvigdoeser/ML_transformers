@@ -83,21 +83,9 @@ In summary, we see that Adagrad actually results in a lower eval_loss, although 
 
 New data sources might enable training a better model than the one provided in the blog post. Here are a couple of suggestions:
 
-* 
+* Inspired by the Modal Whisper podcast transcriptions application, we consider applying the python bindings for the convenient ffmpeg library, 'ffmpeg-python', to acquire online data resources for the feature pipeline. Especially, online videos with high quality, e.g., online news videos with precise subscriptions, along with audio tracks from the broadcasters, could serve as a good candidate for our potential training data. Particularly, with the help of ffmpeg-python, one can avoid the natural silences of the audio source, and divide episodes into short segments, which could improve the convenience for the preparation of training dataset.
 
 * Fine-tune the Whisper model using the Norwegian dataset (as this will get us closer to Swedish than the pre-trained model). Then fine-tune again with the Swedish dataset.
 
-### Optimization choices
-
-Try AdamW and adagrad because of no-free-lunch theorem... I will elaborate on this. 
-
-* Best with AdamW:
-
-{'eval_loss': 0.44238531589508057, 'eval_wer': 19.942996961630502, 'eval_runtime': 980.543, 'eval_samples_per_second': 5.17, 'eval_steps_per_second': 0.647, 'epoch': 12.94}
-{'train_runtime': 35079.1076, 'train_samples_per_second': 4.561, 'train_steps_per_second': 0.285, 'train_loss': 0.01170906912391074, 'epoch': 12.94} 
-
-* Best with Adagrad:
-
-{'eval_loss': 0.4000212848186493, 'eval_wer': 19.942996961630502, 'eval_runtime': 1024.9109, 'eval_samples_per_second': 4.946, 'eval_steps_per_second': 0.619, 'epoch': 7.76}
 
 
