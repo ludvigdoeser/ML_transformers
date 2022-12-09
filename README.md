@@ -46,12 +46,13 @@ The evaluation metric used is the **Word error rate** (`WER`), which is a common
 
 Try AdamW and adagrad because of no-free-lunch theorem... I will elaborate on this. 
 
-* Last with AdamW:
+* Best with AdamW:
 
 {'eval_loss': 0.44238531589508057, 'eval_wer': 19.942996961630502, 'eval_runtime': 980.543, 'eval_samples_per_second': 5.17, 'eval_steps_per_second': 0.647, 'epoch': 12.94}
 {'train_runtime': 35079.1076, 'train_samples_per_second': 4.561, 'train_steps_per_second': 0.285, 'train_loss': 0.01170906912391074, 'epoch': 12.94} 
 
-* Last with Adagrad:
+* Best with Adagrad:
 
+{'eval_loss': 0.4000212848186493, 'eval_wer': 19.942996961630502, 'eval_runtime': 1024.9109, 'eval_samples_per_second': 4.946, 'eval_steps_per_second': 0.619, 'epoch': 7.76}
 
 
