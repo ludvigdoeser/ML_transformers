@@ -50,6 +50,8 @@ pip3 freeze > requirements.txt  # Python3
 
 The evaluation metric used is the **Word error rate** (`WER`), which is a common metric of the performance of an automatic speech recognition system. The value indicates the average number of errors per reference word. This means that the lower the value, the better the performance of the ASR system with a WER of 0 being a perfect score.
 
+The best performance achieved was a `WER` of 19.93 (see table below). This model version is being used in the UIs above. 
+
 ## Future improvements on model performance
 
 ### Model-centric approach
