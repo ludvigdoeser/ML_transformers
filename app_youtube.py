@@ -5,7 +5,7 @@ import gradio as gr
 pipe = pipeline(model="LudvigDoeser/swedish_asr_model_training")  # change to "your-username/the-name-you-picked"
 description = """
 <center><img src="https://raw.githubusercontent.com/ludvigdoeser/ML_transformers/main/images/voice_search.png" width=400px></center>
-Taligenkänning är ett program som översätter tal till text. Det innebär att du kan använda din röst för att producera text istället för att skriva med tangentbordet! Testa här g$
+Taligenkänning är ett program som översätter tal till text. Det innebär att du kan använda din röst för att producera text istället för att skriva med tangentbordet! Testa här genom att kopiera en länk till ett klipp från youtube (notera att endast de första 30 sekunderna blir till text).
 """
 
 # news in basic swedish on youtube is a good test
